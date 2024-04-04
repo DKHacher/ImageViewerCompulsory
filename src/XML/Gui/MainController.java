@@ -90,6 +90,9 @@ public class MainController {
         try {
             Image image = new Image(new FileInputStream(currentFile));
             imageView.setImage(image);
+            imageView.setPreserveRatio(true);
+            imageView.setFitWidth(695);
+            imageView.setFitHeight(436);
         } catch (FileNotFoundException e) {
             showAlert("No File Found", "File was not found");
             e.printStackTrace();
