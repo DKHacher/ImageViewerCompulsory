@@ -14,6 +14,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/MainWindow.fxml"));
         Parent root = loader.load();
+        primaryStage.setResizable(false);
+        primaryStage.setTitle("Oaf Image Viewer 0.0");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }

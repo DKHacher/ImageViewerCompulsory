@@ -10,5 +10,8 @@
 
 .Vbox {
     -fx-border-color: #90C2E7;
+    -fx-border-width: 2px;
+    -fx-background-radius: 5.5;
     -fx-border-radius: 5;
+    -fx-background-color: white;
 }

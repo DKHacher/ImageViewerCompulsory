@@ -1,5 +1,6 @@
 package XML.Gui;
 
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -29,7 +30,7 @@ public class MainController {
 
     private List<File> imageFiles = new ArrayList<>();
     private int currentIndex = 0;
-    private PauseTransition slideshow = new PauseTransition(Duration.seconds(1.5));
+    private PauseTransition slideshow = new PauseTransition(Duration.seconds(2));
     private boolean isSlideshowPlaying = false;
 
     // Constructor
@@ -115,17 +116,37 @@ public class MainController {
     // Image Showing Methods
     private void showImage() {
         if (imageFiles.isEmpty()) return;
-        File currentFile = imageFiles.get(currentIndex);
-        try {
-            Image image = new Image(new FileInputStream(currentFile));
-            imageView.setImage(image);
-            imageView.setPreserveRatio(true);
-            imageView.setFitWidth(695);
-            imageView.setFitHeight(436);
-        } catch (FileNotFoundException e) {
-            showAlert("No File Found", "File was not found");
-            e.printStackTrace();
-        }
+
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(500), imageView);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+
+        fadeOut.setOnFinished(event -> {
+            File currentFile = imageFiles.get(currentIndex);
+            try {
+                Image image = new Image(new FileInputStream(currentFile));
+                imageView.setImage(image);
+                imageView.setPreserveRatio(true);
+                imageView.setFitWidth(695);
+                imageView.setFitHeight(436);
+
+                // Extract the filename without the extension
+                String fileNameWithoutExtension = currentFile.getName().substring(0, currentFile.getName().lastIndexOf('.'));
+                fileNameLbl.setText(fileNameWithoutExtension);
+
+            } catch (FileNotFoundException e) {
+                showAlert("No File Found", "File was not found");
+                e.printStackTrace();
+            }
+
+            FadeTransition fadeIn = new FadeTransition(Duration.millis(500), imageView);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
+        });
+
+        fadeOut.play();
+
         if (isSlideshowPlaying) {
             slideshow.playFromStart();
         }
