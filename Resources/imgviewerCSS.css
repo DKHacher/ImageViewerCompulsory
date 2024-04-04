@@ -8,3 +8,7 @@
     -fx-background-radius: 100;
 }
 
+.Vbox {
+    -fx-border-color: #90C2E7;
+    -fx-border-radius: 5;
+}

@@ -22,14 +22,15 @@ public class MainController {
     @FXML
     private Label fileNameLbl;
     @FXML
-    private Button handleNext, handlePrevious, handleLoad, handleStop, handlePlay, handlePause;
+    private Button handleNext, handlePrevious, handleLoad, handleStop, handlePlayPause;
     @FXML
-    private ImageView imageView;
+    private ImageView imageView, togglePlayPause;
 
 
     private List<File> imageFiles = new ArrayList<>();
     private int currentIndex = 0;
-    private PauseTransition slideshow = new PauseTransition(Duration.seconds(2));
+    private PauseTransition slideshow = new PauseTransition(Duration.seconds(1.5));
+    private boolean isSlideshowPlaying = false;
 
     // Constructor
     public MainController() {
@@ -65,21 +66,49 @@ public class MainController {
                 imageFiles.addAll(Arrays.asList(files));
                 currentIndex = 0;
                 showImage();
-                slideshow.playFromStart();
             }
         }
     }
 
+    /*
     @FXML
     private void handlePause(ActionEvent actionEvent) {
+        isSlideshowPlaying = false;
+        slideshow.pause();
     }
 
     @FXML
     private void handlePlay(ActionEvent actionEvent) {
+        if (imageFiles.size() > 0) { // Check if there are images loaded
+            isSlideshowPlaying = true;
+            slideshow.play();
+        }
     }
+    */
+
+    @FXML
+    private void handlePlayPause(ActionEvent actionEvent){
+        if (imageFiles.isEmpty()) return;
+
+        isSlideshowPlaying = !isSlideshowPlaying;
+
+        if (isSlideshowPlaying) {
+            slideshow.play();
+            togglePlayPause.setImage(new Image(getClass().getResourceAsStream("/Images/pause.png")));
+        } else {
+            slideshow.pause();
+            togglePlayPause.setImage(new Image(getClass().getResourceAsStream("/Images/play.png")));
+        }
+    }
+
 
     @FXML
     private void handleStop(ActionEvent actionEvent) {
+        isSlideshowPlaying = false;
+        slideshow.stop();
+        currentIndex = 0;
+        showImage();
+        togglePlayPause.setImage(new Image(getClass().getResourceAsStream("/Images/play.png")));
     }
 
 
@@ -97,7 +126,9 @@ public class MainController {
             showAlert("No File Found", "File was not found");
             e.printStackTrace();
         }
-        slideshow.playFromStart();
+        if (isSlideshowPlaying) {
+            slideshow.playFromStart();
+        }
     }
 
     private void showNextImage() {
