@@ -1,5 +1,5 @@
 .anchor {
-    -fx-background-color: white;
+    -fx-background-color: #141416;
 }
 
 .button {
@@ -8,10 +8,11 @@
     -fx-background-radius: 100;
 }
 
-.Vbox {
-    -fx-border-color: #90C2E7;
-    -fx-border-width: 2px;
-    -fx-background-radius: 5.5;
-    -fx-border-radius: 5;
-    -fx-background-color: white;
+.label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.hbox {
+    -fx-spacing: 5;
 }

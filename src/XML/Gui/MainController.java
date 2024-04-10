@@ -1,6 +1,7 @@
 package XML.Gui;
 
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -8,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelReader;
+import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.util.Duration;
 import javafx.animation.PauseTransition;
@@ -21,7 +24,7 @@ import java.util.List;
 
 public class MainController {
     @FXML
-    private Label fileNameLbl;
+    private Label fileNameLbl, statsLabel, redLabel, blueLabel, greenLabel, mixedLabel;
     @FXML
     private Button handleNext, handlePrevious, handleLoad, handleStop, handlePlayPause;
     @FXML
@@ -134,6 +137,8 @@ public class MainController {
                 String fileNameWithoutExtension = currentFile.getName().substring(0, currentFile.getName().lastIndexOf('.'));
                 fileNameLbl.setText(fileNameWithoutExtension);
 
+                countPixelStatistics(image);
+
             } catch (FileNotFoundException e) {
                 showAlert("No File Found", "File was not found");
                 e.printStackTrace();
@@ -160,6 +165,37 @@ public class MainController {
         }
         showImage();
     }
+
+
+    // Counting pixel colors
+    private void countPixelStatistics(Image image) {
+        new Thread(() -> {
+            final long[] counts = {0, 0, 0, 0}; // red, green, blue, mixed
+            PixelReader reader = image.getPixelReader();
+            for (int y = 0; y < image.getHeight(); y++) {
+                for (int x = 0; x < image.getWidth(); x++) {
+                    Color color = reader.getColor(x, y);
+                    double r = color.getRed();
+                    double g = color.getGreen();
+                    double b = color.getBlue();
+                    // Determine the dominant color
+                    if (r > g && r > b) counts[0]++;
+                    else if (g > r && g > b) counts[1]++;
+                    else if (b > r && b > g) counts[2]++;
+                    else counts[3]++;
+                }
+            }
+
+            Platform.runLater(() -> {
+                redLabel.setText("Red: " + counts[0]);
+                greenLabel.setText("Green: " + counts[1]);
+                blueLabel.setText("Blue: " + counts[2]);
+                mixedLabel.setText("Mixed: " + counts[3]);
+            });
+        }).start();
+    }
+
+
 
 
     //Alert

@@ -6,77 +6,106 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="830.0" styleClass="anchor" stylesheets="@imgviewerCSS.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="XML.Gui.MainController">
    <children>
-      <VBox fx:id="imageContainer" alignment="CENTER" layoutX="64.0" layoutY="82.0" prefHeight="436.0" prefWidth="695.0" styleClass="Vbox">
+      <AnchorPane layoutX="64.0" layoutY="20.0">
          <children>
-            <ImageView fx:id="imageView" fitHeight="28.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true" styleClass="image">
-               <image>
-                  <Image url="@Images" />
-               </image>
-            </ImageView>
+            <VBox fx:id="imageContainer" alignment="CENTER" layoutX="5.0" layoutY="36.0" prefHeight="436.0" prefWidth="695.0" styleClass="Vbox">
+               <children>
+                  <ImageView fx:id="imageView" fitHeight="28.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true" styleClass="image">
+                     <image>
+                        <Image url="@Images" />
+                     </image>
+                     <effect>
+                        <DropShadow offsetX="4.0" offsetY="4.0">
+                           <color>
+                              <Color opacity="0.31382977962493896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </ImageView>
+               </children>
+               <effect>
+                  <DropShadow offsetX="4.0" offsetY="4.0">
+                     <color>
+                        <Color opacity="0.2226443886756897" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </VBox>
+            <HBox layoutX="305.0" layoutY="482.0" styleClass="hbox">
+               <children>
+                  <Button fx:id="previousButton" mnemonicParsing="false" onAction="#handlePrevious">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/Left_Arrow.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#handleNext">
+                     <graphic>
+                        <ImageView fitHeight="28.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/Right_Arrow.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Button fx:id="loadButton" layoutX="664.0" layoutY="482.0" mnemonicParsing="false" onAction="#handleLoad" prefHeight="36.0" prefWidth="38.0">
+               <graphic>
+                  <ImageView fitHeight="33.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/Load.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <HBox layoutX="5.0" layoutY="482.0" styleClass="hbox">
+               <children>
+                  <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#handlePlayPause" prefHeight="36.0" prefWidth="37.0">
+                     <graphic>
+                        <ImageView fx:id="togglePlayPause" fitHeight="33.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/play.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="stopButton" mnemonicParsing="false" onAction="#handleStop" prefHeight="36.0" prefWidth="37.0">
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/stop.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Label fx:id="fileNameLbl" layoutX="4.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
          </children>
-         <effect>
-            <DropShadow offsetX="4.0" offsetY="4.0">
-               <color>
-                  <Color opacity="0.2226443886756897" />
-               </color>
-            </DropShadow>
-         </effect>
-      </VBox>
-      <Button fx:id="nextButton" layoutX="419.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleNext">
-         <graphic>
-            <ImageView fitHeight="28.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/Right_Arrow.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button fx:id="loadButton" layoutX="723.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleLoad" prefHeight="36.0" prefWidth="38.0">
-         <graphic>
-            <ImageView fitHeight="33.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/Load.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button fx:id="previousButton" layoutX="368.0" layoutY="528.0" mnemonicParsing="false" onAction="#handlePrevious">
-         <graphic>
-            <ImageView fitHeight="28.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/Left_Arrow.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button fx:id="playPauseButton" layoutX="64.0" layoutY="528.0" mnemonicParsing="false" onAction="#handlePlayPause" prefHeight="36.0" prefWidth="37.0">
-         <graphic>
-            <ImageView fx:id="togglePlayPause" fitHeight="33.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/play.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Button fx:id="stopButton" layoutX="102.0" layoutY="528.0" mnemonicParsing="false" onAction="#handleStop" prefHeight="36.0" prefWidth="37.0">
-         <graphic>
-            <ImageView fitHeight="33.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@Images/stop.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
-      <Label fx:id="fileNameLbl" layoutX="63.0" layoutY="46.0">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
+      </AnchorPane>
+      <HBox alignment="CENTER" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" styleClass="hbox">
+         <children>
+            <Label fx:id="redLabel"/>
+            <Label fx:id="greenLabel"/>
+            <Label fx:id="blueLabel"/>
+            <Label fx:id="mixedLabel"/>
+         </children>
+      </HBox>
+
    </children>
 </AnchorPane>
