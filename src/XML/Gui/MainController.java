@@ -1,5 +1,6 @@
 package XML.Gui;
 
+import XML.TaskCountPixels;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -155,42 +156,23 @@ public class MainController {
 
     // Counting pixel colors
     private void countPixelStatistics(Image image) {
-        Task<long[]> task = new Task<>() {
-            @Override
-            protected long[] call() {
-                long[] counts = {0, 0, 0, 0}; // red, green, blue, mixed
-                PixelReader reader = image.getPixelReader();
-                for (int y = 0; y < image.getHeight(); y++) {
-                    for (int x = 0; x < image.getWidth(); x++) {
-                        Color color = reader.getColor(x, y);
-                        double r = color.getRed();
-                        double g = color.getGreen();
-                        double b = color.getBlue();
-                        // Determine the dominant color
-                        if (r > g && r > b) counts[0]++;
-                        else if (g > r && g > b) counts[1]++;
-                        else if (b > r && b > g) counts[2]++;
-                        else counts[3]++;
-                    }
-                }
-                return counts;
-            }
-        };
+        TaskCountPixels tcp = new TaskCountPixels();
+        tcp.setImage(image);
 
-        task.setOnSucceeded(e -> {
-            long[] counts = task.getValue();
+        tcp.setOnSucceeded(e -> {
+            long[] counts = tcp.getValue();
             redLabel.setText("Red: " + counts[0]);
             greenLabel.setText("Green: " + counts[1]);
             blueLabel.setText("Blue: " + counts[2]);
             mixedLabel.setText("Mixed: " + counts[3]);
         });
 
-        task.setOnFailed(e -> {
+        tcp.setOnFailed(e -> {
             showAlert("Error", "Failed to process image statistics.");
         });
 
         //Execute task with single-thread executor to ensure no concurrent UI updates
-        executor.execute(task);
+        executor.execute(tcp);
     }
 
 
